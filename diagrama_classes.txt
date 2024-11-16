@@ -1,0 +1,327 @@
+--Controller
+
+GestorServidor
+- LOGGER: Logger
+--
++escribirServidor(nombre: String, ip: String, puerto: int): boolean
++buscarServidor(): String
++getIP(linea: String): String
++getPuerto(linea: String): int
++validarServidor(nombre: String): String
++conectarServidor(usuario: Usuario): void
+-obtenerNombresArchivosTXT(ruta: String): Deque<String>
+
+IObservable
+--
++ altaUsuario(paquete: ProxyPaquete): boolean
++ bajaUsuario(paquete: ProxyPaquete): void
++ mandarBaja(paquete: ProxyPaquete): void
++ reenvioMensaje(paquete: ProxyPaquete): void
++ notificarAll(nick: String): void
++ notificarBaja(nick: String): void
++ enviarNotificacion(paquete: ProxyPaquete): void
+
+Servidor
+- instancia: Servidor
+- lista: ListaUsuarios
+- interfaz: InterfazServidor
+- ip: String
+- nombre: String
+- puerto: int
+- paqueteFachada: PaqueteFachada
+- LOGGER: Logger
+--
++ Servidor(nombre: String, ip: String, puerto: int, interfaz: InterfazServidor, lista: ListaUsuarios)
++ getInstancia(nombre: String, ip: String, puerto: int, interfaz: InterfazServidor, lista: ListaUsuarios): Servidor
++ run(): void
++ manejarPaquete(paquete: ProxyPaquete): void
++ altaUsuario(paquete: ProxyPaquete): boolean
++ bajaUsuario(paquete: ProxyPaquete): void
++ mandarBaja(paquete: ProxyPaquete): void
++ reenvioMensaje(paquete: ProxyPaquete): void
++ agregarMensaje(mensaje: String, color: Color): void
++ notificarAll(nick: String): void
++ notificarBaja(nick: String): void
++ enviarNotificacion(paquete: ProxyPaquete): void
++ toString(): String
+
+Usuario
+- interfaz: InterfazUsuario
+- nick: String
+- ipServidor: String
+- puertoServidor: int
+- puerto: Integer
+- paqueteFachada: PaqueteFachada
+- LOGGER: Logger
+--
++ Usuario(interfaz: InterfazUsuario, usuario: String)
++ run(): void
+- mandarMensaje(): void
+- mandarBaja(): void
+- mandarAlta(): void
+- leerServidor(server: ServerSocket): void
+- manejarPaquete(pp: ProxyPaquete): void
+- actualizarLista(lista: DefaultListModel<String>): void
+- crearConexion(): int
++ setIpServidor(ipServidor: String): void
++ setPuertoServidor(puertoServidor: int): void
+- initComponents(): void
+
+------------------------- main
+
+ClienteServidor
+--
++ main(args: String[]): void
+
+ClienteUsuario
+--
++ main(args: String[]): void
+
+-------------------------  meta
+Constantes
+- DEBUG: boolean
+- DIR: String
+- CHAT_SERVER_NAME: String
+- CHAT_NOTIFICATION_NAME: String
+- TYPE_LOGIN: String
+- TYPE_LOGOUT: String
+- TYPE_DENIED: String
+- TYPE_MESSAGE: String
+- TYPE_USER_DATA: String
+- RED_FORTMAT: String
+- GREEN_FORTMAT: String
+- YELLOW_FORTMAT: String
+- BLUE_FORTMAT: String
+- PURPLE_FORTMAT: String
+- SERVER_NAME: String
+- SERVER_MESSAGE: String
+- SERVER_MESSAGE_LOGOUT: String
+- SERVER_PORT: int
+- SERVER_IP: String
+- COLOR_ACTUALIZACION: Color
+- COLOR_MENSAJE: Color
+- COLOR_ERROR: Color
+- COLOR_ALTA: Color
+- COLOR_BAJA: Color
+--
+
+-------------------------  model
+ListaUsuarios
+- lista: HashMap<String, ProxyPaquete>
+--
++ ListaUsuarios()
++ crearIteradorPaquete(): Iterator<ProxyPaquete>
++ crearIteradorNombre(): Iterator<String>
++ agregarUsuario(paquete: ProxyPaquete): Boolean
++ eliminarUsuario(nombre: String): Boolean
++ getPaquete(nombre: String): ProxyPaquete
++ contains(nombre: String): boolean
++ size(): int
++ getListModel(): DefaultListModel<String>
+
+Paquete
+--
++ getNickname(): String
++ getIP(): String
++ getMensaje(): String
++ getPort(): int
++ getListaUsuarios(): DefaultListModel
++ getTipo(): String
++ upDate(actualizada: DefaultListModel): void
++ getDestinatario(): String
++ imprimirLista(): String
++ print(): void
++ setMensaje(mensaje: String, actualizado: String): void
++ getTipoInterno(): String
++ setTipoInterno(nuevo: String): void
+
+PaqueteAlta
+- nickname: String
+- ip: String
+- mensaje: String
+- port: int
+- tipo: String
+--
++ PaqueteAlta(nickname: String, ip: String, port: int)
++ getNickname(): String
++ getIP(): String
++ getMensaje(): String
++ getPort(): int
++ getListaUsuarios(): DefaultListModel
++ getTipo(): String
++ upDate(actualizada: DefaultListModel): void
++ getDestinatario(): String
++ imprimirLista(): String
++ print(): void
++ setMensaje(mensaje: String, actualizado: String): void
++ getTipoInterno(): String
++ setTipoInterno(nuevo: String): void
+
+PaqueteBaja
+- nick: String
+- tipo: String
+--
++ PaqueteBaja(nickName: String)
++ getNickname(): String
++ getIP(): String
++ getMensaje(): String
++ getPort(): int
++ getListaUsuarios(): DefaultListModel
++ getTipo(): String
++ setMensaje(mensaje: String, actualizado: String): void
++ upDate(actualizada: DefaultListModel): void
++ getDestinatario(): String
++ imprimirLista(): String
++ print(): void
++ getTipoInterno(): String
++ setTipoInterno(nuevo: String): void
+
+PaqueteDatos
+- mensaje: String
+- tipo: String
+- tipoInterno: String
+- actualizado: String
+- nick: String
+- ip: String
+- puerto: int
+- usuariosOnline: DefaultListModel
+--
++ PaqueteDatos(paqueteAlta: ProxyPaquete)
++ getNickname(): String
++ getIP(): String
++ getMensaje(): String
++ setMensaje(mensaje: String, actualizado: String): void
++ getPort(): int
++ getListaUsuarios(): DefaultListModel
++ getTipo(): String
++ upDate(actualizada: DefaultListModel): void
++ imprimirLista(): String
++ print(): void
++ getDestinatario(): String
++ getTipoInterno(): String
++ setTipoInterno(nuevo: String): void
+
+PaqueteMensaje
+- nickname: String
+- nickNameDestinatario: String
+- ip: String
+- mensaje: String
+- port: int
+- tipo: String
+--
++ PaqueteMensaje(nick: String, mensaje: String, nickNameDestinatario: String)
++ getNickname(): String
++ getDestinatario(): String
++ getIP(): String
++ getMensaje(): String
++ getPort(): int
++ getListaUsuarios(): DefaultListModel
++ getTipo(): String
++ upDate(actualizada: DefaultListModel): void
++ setMensaje(mensaje: String, actualizado: String): void
++ imprimirLista(): String
++ print(): void
++ getTipoInterno(): String
++ setTipoInterno(nuevo: String): void
+
+ProxyPaquete
+- paquete: Paquete
+--
++ ProxyPaquete(paquete: Paquete)
++ getNickname(): String
++ getIP(): String
++ getMensaje(): String
++ getPort(): int
++ getListaUsuarios(): DefaultListModel
++ getTipo(): String
++ upDate(actualizada: DefaultListModel): void
++ setMensaje(mensaje: String, actualizado: String): void
++ getDestinatario(): String
++ imprimirLista(): String
++ print(): void
++ getTipoInterno(): String
++ setTipoInterno(nuevo: String): void
+
+PaqueteFachada
+- serverSocket: ServerSocket
+- LOGGER: Logger
+--
++ PaqueteFachada()
++ enviarPaquete(ip: String, puerto: int, paquete: ProxyPaquete): void
++ iniciarServerSocket(puerto: int): void
++ recibirPaquete(serverSocket: ServerSocket): ProxyPaquete
++ cerrarServerSocket(): void
++ getServerSocket(): ServerSocket
+
+-------------------------  view
+
+Inicio
+- contraLabel: JLabel
+- contraTXT: JPasswordField
+- entrarB: JButton
+- fondo: JLabel
+- usuarioLabel: JLabel
+- usuarioTXT: JTextField
+--
++ Inicio()
+- initComponents(): void
+- entrarBActionPerformed(evt: ActionEvent): void
++ main(args: String[]): void
+
+InterfazServidor
+- mensajesOriginales: StringBuilder
+- acciones: JTextPane
+- fondo: JLabel
+- filtroTipo: JComboBox<String>
+- jScrollPane1: JScrollPane
+- titulo: JLabel
+--
++ InterfazServidor()
+- initComponents(): void
+- filtroTipoActionPerformed(evt: ActionEvent): void
++ removerContenidoEnCorchetes(mensaje: String): String
++ agregarMensaje(mensaje: String, color: Color): void
++ getAcciones(): JTextPane
++ main(args: String[]): void
+
+InterfazUsuario
+- chats: HashMap<String, JPanel>
+- ventanaActual: String
+- myNick: String
+- Lusuarios: JList<String>
+- baseChat: JScrollPane
+- baseDestinatarios: JScrollPane
+- contador: JLabel
+- envio: JButton
+- fondo: JLabel
+- mensaje: JTextField
+- nickname: JLabel
+- nombreAmigo: JLabel
+- notificaciones: JButton
+--
++ InterfazUsuario(nick: String)
+- initComponents(): void
+- notificacionesActionPerformed(evt: ActionEvent): void
+- envioActionPerformed(evt: ActionEvent): void
+- LusuariosValueChanged(evt: ListSelectionEvent): void
++ getChat(nick: String): JPanel
++ addChat(nick: String): void
++ removeChat(nick: String): void
++ setChat(nick: String): void
++ setLista(listaActualizada: DefaultListModel<String>): void
++ cargarChats(lista: DefaultListModel<String>): void
++ eliminarme(listaActualizada: DefaultListModel<String>): DefaultListModel<String>
++ agregarMensaje(chatId: String, mensaje: String): void
++ formatearMensaje(mensaje: String, anchoMaximo: int, fuente: Font): String
++ getMensaje(): JTextField
++ getBotonEnvio(): JButton
++ getLista(): JList<String>
++ getNombre(): JLabel
++ setNombre(nick: String): void
++ getBotonNotificaciones(): JButton
++ getChats(): HashMap<String, JPanel>
++ getContador(): JLabel
++ aumentarContador(): void
++ setContador(): void
++ reiniciarContador(): void
++ getVentanaActual(): String

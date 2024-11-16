@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="IntroChat" default="default" basedir=".">
+    <description>Builds, tests, and runs the project IntroChat.</description>
+    <import file="nbproject/build-impl.xml"/>
+
+    <!-- Target to clean the project -->
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <!-- Target to compile the project -->
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes" includeantruntime="false">
+            <classpath>
+                <pathelement location="dist/lib/AbsoluteLayout.jar"/>
+                <pathelement location="dist/lib/json-simple-1.1.1.jar"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- Target to run the server -->
+    <target name="run-server" depends="compile">
+        <java classname="main.ClienteServidor" fork="true">
+            <classpath>
+                <pathelement location="build/classes"/>
+                <pathelement location="dist/lib/AbsoluteLayout.jar"/>
+                <pathelement location="dist/lib/json-simple-1.1.1.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- Target to run the client -->
+    <target name="run-client" depends="compile">
+        <java classname="main.ClienteUsuario" fork="true">
+            <classpath>
+                <pathelement location="build/classes"/>
+                <pathelement location="dist/lib/AbsoluteLayout.jar"/>
+                <pathelement location="dist/lib/json-simple-1.1.1.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="run-client-server" depends="compile">
+        <java classname="main.ClienteServidor" fork="true">
+            <classpath>
+                <pathelement location="build/classes"/>
+                <pathelement location="dist/lib/AbsoluteLayout.jar"/>
+                <pathelement location="dist/lib/json-simple-1.1.1.jar"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="run-client-user" depends="compile">
+        <java classname="main.ClienteUsuario" fork="true">
+            <classpath>
+                <pathelement location="build/classes"/>
+                <pathelement location="dist/lib/AbsoluteLayout.jar"/>
+                <pathelement location="dist/lib/json-simple-1.1.1.jar"/>
+            </classpath>
+        </java>
+    </target>
+    <target name="copy-resources" depends="compile">
+        <copy todir="build/classes">
+            <fileset dir="src" includes="Images/**"/>
+        </copy>
+    </target>
+</project>
